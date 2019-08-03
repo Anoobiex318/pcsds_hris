@@ -1,79 +1,53 @@
 <?php 
-include("header.php")
+include("header.php");
 ?>
-<body>
+<section class="content">
 <style type="text/css">
-    table {
-        width: 100%;
-        text-align: center;
-    }
-    td {
-        border: 1px solid;
-    }
-     th {
-        font-size: 15px;   
-        border: 1px solid;
-    }
-</style> 
- <section class="content">
-    <div class="container-fluid">
-        <!-- Exportable Table -->
-        <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div class="">
-                    <div class = "panel panel-primary">
-                        <div class = "panel-heading">
-                            <button class = "btn btn-default" href="#" data-toggle="modal" data-target="#add_file" style = "float:right; width:150px;">Add File</button>
-                            <h4>Accomplishment Report</h4>
+  thead{
+    font-weight: bolder;
+  }
+
+</style>
+        <div class="container-fluid">
+            <!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class = "panel panel-primary">
+                            
+                            
+                            <div class = "panel-heading">
+                              
+                                   <!-- 
+                                    <button class="btn btn-warning" href="#" data-toggle="modal" data-target="#add_folder" style = "float:right; width:150px; border-radius: 10px;"><span class = "fa fa-folder-open fa-lg"></span> Add Folder <span class = "fa fa-plus-circle fa-lg"></span></button>                          
+                                -->
+                                 
+                            <h4 style="font-size: 1vw 2vh;">Accomplishment Reports</h4>
+                         <div class="input-group col-xs-3" >   
+                            <span class="input-group-addon" style="background-color: white;">&nbsp; <i class="fa fa-search"></i></span>
+                            <input  type="text" class="form-control light-table-filter form-control" data-table="filter-active" placeholder="Search Here...">
                         </div>
-                    </div>
-                    <?php include("add_file_modal.php"); ?>
-                    <div id="print">
-                        <div class="card" style="width: 49%; display: inline-block;">
-                            <div class="per-files">
-                                <div class = "panel panel-primary">
-                                    <div class = "panel-heading">
-                                        <h5>201 FILES</h5>
-                                    </div>
-                                </div>
-                                <?php 
-                                    include('connect.php');
+                       </div>
+                         <?php include("add_folder.php"); ?>
+                         <div id="print">
+                            <div class = "scroll">
+                        <div class="body ">
 
-                                    $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id group by tbl_files.per_id");
-                                    $stmt->execute();
-                                    if($stmt->rowCount() > 0) {
+                                <table  data-responsive="table"  id = "example" class = "filter-active display nowrap table table-striped table-xs"  cellspacing = "0" >
 
-                                    while($row=$stmt->fetch(PDO::FETCH_ASSOC)) {
-
-                                    extract($row);
-                                ?>
-                                <div class="files">
-                                <form method="POST" action="" >
-                                    <a href="file_table.php?per_id=<?php echo $per_id; ?>"><img src="img/folder.png" style="width: 100px; height: 80px; padding: 5px;"><br>
-                                    <p><?php echo $per_firstname . " " . $per_lastname; ?></p></a>
-                                </div>
-                                </form>
-                                <?php } } ?>
-                            </div>
-                        </div>
-                        <div class="card pull-right" style="width: 50%;">
-                            <div class="per-files">
-                                <div class = "panel panel-primary">
-
-                                    <div class = "panel-heading">
-                                        <h5>Files</h5>
-                                    </div>
-                                
-                                    <table cellspacing="0">
-                                        <tr>
-                                            <th>File Name</th>
-                                            <th>Date Uploaded</th>
-                                            <th>Download</th>
-                                        </tr>
-                                        <tbody>
-                                        <?php
+                                <thead>
+                                  
+                                    <tr>
+                                        <td class="hidden">ID</td>
+                                        <td>Personel Name</td>
+                                        <td width = "200px">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                               <?php
                                 if (isset($_GET['per_id'])){
-                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}'");
+                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}' && file_repo ='Accomplishment Report'");
                                     $stmt->execute();
                                     if($stmt->rowCount() > 0) {
 
@@ -81,25 +55,20 @@ include("header.php")
 
                                     extract($row);
                                 ?>
-                                            <tr>
-                                            <td><?php echo $file_name; ?></td>
-                                            <td><?php echo $date_uploaded; ?></td>
-                                            <td><a href="download.php?download_file=<?php echo $file_name ;?>"><span class="glyphicon glyphicon-download" aria-hidden="true"></span></a></td>
-                                            </tr>
-                                        </tbody>
-                                         <?php } } ?>
-                                    </table>
-                                    
-                                     <?php } else { ?>
+                              <td class="hidden"><?php echo $row['dept_id']; ?></td>
+                                        <td>
 
-                                    <div class = "panel-heading">
-                                        <h5>Nothing Selected</h5>
-                                    </div>
-                                     <?php }
-                                     ?>
 
-                                </div>
-                            </div>
+                                            <i class="fa fa-folder-o fa-5x"aria-hidden="true" style="color: #FFE000"></i><div style="text-align: justify;"><?php echo $per_firstname . " " . $per_lastname; ?></div>
+
+                                        <td>
+                                         <?php include("add_file_modal.php") ?>
+                                        </td>
+                                    </tr>                                      
+                                     <?php 
+                                     } } }?>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -107,6 +76,3 @@ include("header.php")
          </div>
     </div>
 </section>
-</body>
-<script src="plugins/js/jquery-1.js"></script>
-<?php include("script.php"); ?>

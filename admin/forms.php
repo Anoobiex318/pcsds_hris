@@ -24,7 +24,7 @@ include("header.php")
                     <div class = "panel panel-primary">
                         <div class = "panel-heading">
                             <button class = "btn btn-default" href="#" data-toggle="modal" data-target="#add_file" style = "float:right; width:150px;">Add File</button>
-                            <h4>FORMS/TEMPLATES</h4>
+                            <h4>OTHERS</h4>
                         </div>
                     </div>
                     <?php include("add_file_modal.php"); ?>
@@ -33,7 +33,7 @@ include("header.php")
                             <div class="per-files">
                                 <div class = "panel panel-primary">
                                     <div class = "panel-heading">
-                                        <h5>201 FILES</h5>
+                                        <h5>OTHER FILES</h5>
                                     </div>
                                 </div>
                                 <?php 
@@ -49,7 +49,7 @@ include("header.php")
                                 ?>
                                 <div class="files">
                                 <form method="POST" action="" >
-                                    <a href="file_table.php?per_id=<?php echo $per_id; ?>"><img src="img/folder.png" style="width: 100px; height: 80px; padding: 5px;"><br>
+                                    <a href="forms.php?per_id=<?php echo $per_id; ?>"><img src="img/folder.png" style="width: 100px; height: 80px; padding: 5px;"><br>
                                     <p><?php echo $per_firstname . " " . $per_lastname; ?></p></a>
                                 </div>
                                 </form>
@@ -73,7 +73,7 @@ include("header.php")
                                         <tbody>
                                         <?php
                                 if (isset($_GET['per_id'])){
-                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}'");
+                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}'&& file_repo ='Others'");
                                     $stmt->execute();
                                     if($stmt->rowCount() > 0) {
 
@@ -108,5 +108,3 @@ include("header.php")
     </div>
 </section>
 </body>
-<script src="plugins/js/jquery-1.js"></script>
-<?php include("script.php"); ?>

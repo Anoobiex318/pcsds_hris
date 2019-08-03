@@ -5,7 +5,7 @@
     <button><a href="all_personnel.php">Back</a></button>
   </div>
   <div class="filterss" style="float: right; margin-right: 120px;">
-    <button onclick="printContent('print')" id = "hit" style="float: right;">Print Report</button>
+    <button onclick="printContent('print')"  style="float: right;">Print Report</button>
     <input id="btnExport" type="button" value="Export to Excel" style="float: right; margin-top: 30px; margin-right: -86px;">
     <input type="search" class="light-table-filter" data-table="order-table" placeholder="Filter">
     &nbsp;&nbsp;
@@ -35,17 +35,21 @@
       </div>
   <br><br>
   <div id="print" style="border: 1px solid; width: 80%; height: auto;">
-    <div class="report-title" style = "margin:10px;"><br/>
+   <div class="report-title" style = "margin:20px; margin-top: 25px;"><br/>
       <div class="print-logo">
-        <img src="../images/logo.png" width="120px" height="120px" style=" position: left;">
+        <img src="../images/logo1.png" width="120px" height="120px" style=" float: left;">
+      </div>
+      
+      <div class="print-logo">
+        <img src="../images/biosphere.png" width="120px" height="120px" style=" float: right;">
       </div>
       <center>Republic of the Philippines</center>
       <center><strong>Palawan Council For Sustainable Development Staff</strong></center>
       <center>PCSD Building Sports Complex Road Sta. Monica Heights, Puerto Princesa City, Palawan</center>
       <center>P.O. Box 45 PPC 5300 Palawan, Philippines
-Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
+  Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
       <br />
-      <center><strong>SUMMARY OF STAFF</strong></center>
+      <center><strong>SUMMARY OF STAFFS</strong></center>
       <center><strong>As of <?php echo date('F Y'); ?></strong></center>
     </div>
       <br />
@@ -55,12 +59,13 @@ Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
       <table id="example" class="stripe order-table" cellspacing="0">
         <thead>
                                     <tr>
-                                        <td class="hidden">ID</td>
+                                        
                                         <td>Name</td>
                                         
                                         <td>Position/Title</td>
                                         <td>Age</td>
                                         <td>Gender</td>
+                                        <td>Position</td>
                                         <td>Status</td>
                                         <td>Address</td>
                                         <td>Birthdate</td>
@@ -71,21 +76,21 @@ Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
                                         <td>Master's Degree</td>
                                         <td>Doctorate Degree</td>
                                         <td>Others</td>
-                                        <td>No. of Years in CHMSC</td>
+                                        <td>No. of Years in PCSD</td>
                                         <td>Eligibility</td>
                                         <td>Plantilla Number</td>
-                                        <td>Employee Status</td>
+                                        <td>Division</td>
                                         <td>Tin Number</td>
                                         <td>Pag-ibig Number</td>
                                         <td>GSIS Number</td>
-                                        <td>Campus</td>
+                                       
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
                                   <?php
                                     include('connect.php');
-                                    $display = $con->prepare("SELECT * FROM tbl_personnel LEFT JOIN tbl_position ON tbl_personnel.pos_id=tbl_position.pos_id LEFT JOIN tbl_gass_rank ON tbl_personnel.gass_id = tbl_gass_rank.gass_id LEFT JOIN tbl_academic_rank ON tbl_personnel.rank_id = tbl_academic_rank.rank_id ORDER BY per_id ASC");
+                                    $display = $con->prepare("SELECT * FROM tbl_personnel ORDER BY per_lastname ASC");
                                     $display->execute();
                                     $fetch = $display->fetchAll();                               
 
@@ -99,15 +104,15 @@ Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
 
 
                                         $difference = $date->diff($now)->format('%y');
-                                        $length = $date->diff($now)->format('%y');
+                                        $length = $now->diff($date1)->format('%y');
 
 
                                   ?>
                                   <tr>
-                                  <td class="hidden"><?php echo $row['per_id']; ?></td>
+                                  
                                   <td><?php echo $row['per_lastname'].", ".$row['per_firstname']." ".$row['per_middlename']; ?></td>
-                                 
-                                  <td values="<?php echo $row['pos_id']; ?>"><?php echo $row['pos_name']; ?></td>
+                                 <td><?php echo $row['per_position']; ?></td>
+                                  <td values="<?php echo $row['pos_id']; ?>"><?php echo $row['per_status']; ?></td>
                                   <td><?php echo $difference;?></td>
                                   <td><?php echo $row['per_gender']; ?></td>
                                   <td><?php echo $row['per_status']; ?></td>
@@ -119,15 +124,15 @@ Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
                                   <td><?php echo $row['bs_name']; ?></td>
                                   <td><?php echo $row['ms_name']; ?></td>
                                   <td><?php echo $row['dr_name']; ?></td>
-                                  <td><?php echo $length?></td>
                                   <td><?php echo $row['other_degree']; ?></td>
+                                  <td><?php echo $length?></td>
                                   <td><?php echo $row['per_eligibility']; ?></td>
                                   <td><?php echo $row['per_plantilla_no']; ?></td>
                                   <td><?php echo $row['per_designation']; ?></td>
                                   <td><?php echo $row['per_tin_no']; ?></td>
                                   <td><?php echo $row['per_pagibig_no']; ?></td>
                                   <td><?php echo $row['per_gsis_bp_no']; ?></td>
-                                  <td><?php echo $row['per_campus'];?></td>
+                                 
                                 </tr>                           
                                      <?php 
                                      } ?>
@@ -238,7 +243,7 @@ function printContent(el){
 
 })(document);
 </script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="js/angular.min.js"></script>
 <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {

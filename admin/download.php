@@ -5,7 +5,7 @@ set_time_limit(0); // disable the time limit for this script
  
 if (isset($_GET['download_file'])) {
 // place this code inside a php file and call it f.e. "download.php" 
-$path = $_SERVER['DOCUMENT_ROOT']."/PCSDS-HRIS/admin/"; // change the path to fit your websites document structure 
+$path = $_SERVER['DOCUMENT_ROOT']."/pcsds_hris/admin/"; // change the path to fit your websites document structure 
 $fullPath = $path.$_GET['download_file']; 
   
 if ($fd = fopen($fullPath, "r")) { 

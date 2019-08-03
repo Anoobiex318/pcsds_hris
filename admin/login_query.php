@@ -18,8 +18,8 @@ if($count > 0) {
 	window.location = 'home.php';
 </script>";
 } else {
-	echo "<script>alert('Wrong Username or Password')</script>";
-	header('location:../index.php');
-}
+
+echo "<script>alert('Invalid Credentials! Pls. Try Again'); window.location='../index.php'</script>";}
+
 }
 ?>

@@ -1,10 +1,11 @@
 <link rel="stylesheet" type="text/css" href="css/style1.css">
+
 <center>
     <div class="backk" style="float: left; margin-left: 120px;">
         <button><a href="all_personnel.php">Back</a></button>
     </div>
     <div class="filterss" style="float: right; margin-right: 120px;" onload="refresh();">
-        <button onclick="printContent('print')" id = "hit" style="float: right;">Print Report</button>
+        <button onclick="printContent('print')"  style="float: right;">Print Report</button>
         <input id="btnExport" type="button" value="Export to Excel" style="float: right; margin-top: 30px; margin-right: -86px;">
         
     </div>
@@ -15,11 +16,11 @@
             <table>
             <tr>
                 <td>Prepared by :</td>
-                <td><input ng-model="firstname" placeholder="Name" class="form-control"></td>
+                <td><input ng-model="firstname" placeholder="Name" class="form-control" required=""></td>
             </tr>
             <tr>
                 <td>Position :</td>
-                <td><input ng-model="position" placeholder="Position" class="form-control"></td>
+                <td><input ng-model="position" placeholder="Position" class="form-control" required=""></td>
             </tr>
             <!-- <tr>
                 <td>Certified Correct :</td>
@@ -35,7 +36,7 @@
     <div id="print" style="border: 1px solid; width: 100%; height: auto;">
         <div class="report-title" style = "margin:20px; margin-top: 25px;"><br/>
       <div class="print-logo">
-        <img src="../images/logo.png" width="120px" height="120px" style=" float: left;">
+        <img src="../images/logo1.png" width="120px" height="120px" style=" float: left;">
       </div>
       
       <div class="print-logo">
@@ -47,7 +48,7 @@
       <center>P.O. Box 45 PPC 5300 Palawan, Philippines
 	Telephone No: (048) 434-4235 | Telefax: 434-4234</center>
       <br />
-      <center><strong>SUMMARY OF STAFF</strong></center>
+      <center><strong>STAFF INFORMATION</strong></center>
       <center><strong>As of <?php echo date('F Y'); ?></strong></center>
     </div>
        
@@ -87,7 +88,7 @@
 
      <center> <table id = "example" class = "stripe order-table" cellspacing = "0" style="margin: 10px;">
              
-		<td colspan = "5" class = "page-header"> I. Personal Information</td>	
+		<td colspan = "5" class = "page-header"><strong> I. Personal Information</strong></td>	
 		</tr>
 		<tr>
 			<td>
@@ -120,7 +121,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan = "3">
+			<td colspan = "1">
 			<label><u><?php echo $row['per_place_of_birth']; ?></u></label>
 			<br>
 			Place of Birth
@@ -129,20 +130,36 @@
 			<br>
 			Contact No.		
 			</td>
-		</tr>
-		<tr>
-			<td><label><u><?php echo $row['per_gender']; ?></u></label>
+
+			<td><label><u><?php echo $row['per_email']; ?></u></label>
 			<br>
-			Gender	
+			Email Address		
 			</td>
-			<td><label><u><?php echo $row['per_status']; ?></u></label>
+			<td><label><u><?php echo $row['per_civil_status']; ?></u></label>
 			<br>
 			Civil Status		
 			</td>
-			<td colspan="2"><label><u><?php echo $row['per_date_of_original_appointment']; ?></u></label>
+		</tr>
+
+		<tr>
+			<td ><label><u><?php echo $row['per_gender']; ?></u></label>
+			<br>
+			Gender	
+			</td>
+			<td><label><u><?php echo $row['per_civil_status']; ?></u></label>
+			<br>
+			Civil Status		
+			</td>
+			
+			<td ><label><u><?php echo $row['per_date_of_original_appointment']; ?></u></label>
 			<br>
 			Date of Appointment		
 			</td>
+			<td colspan="2" ><label><u><?php echo $row['per_date_of_last_appointment']; ?></u></label>
+			<br>
+			Date of Last Appointment		
+			</td>
+			
 		</tr>
 		<tr>
 			<td><label><u><?php echo $row['per_pagibig_no']; ?></u></label>
@@ -166,33 +183,33 @@
 			</td>
 			<td>
 			<?php
-			$result1=$con->prepare("SELECT * FROM tbl_personnel LEFT JOIN tbl_position ON tbl_personnel.pos_id = tbl_position.pos_id WHERE per_id='{$_GET['per_id']}'");
+			$result1=$con->prepare("SELECT * FROM tbl_personnel WHERE per_id='{$_GET['per_id']}'");
 	$result1->execute();
 	$fetch1 = $result1->fetchall();
 	foreach($fetch1 as $key => $row1) { 
 	?>
-			<label><u><?php echo $row1['pos_name']; ?></u></label>
+			<label><u><?php echo $row1['per_position']; ?></u></label>
 	<?php } ?>	
 			<br>
 			Position
 		
 			</td>
 			<td>
-			
+			<label><u><?php echo $row1['per_status']; ?></u></label>
+	<?php } ?>	
 			<br>
 			Employee Status	
 			</td>
 			<td>
 			 <?php
                                     include('connect.php');
-                                    $display = $con->prepare("SELECT * FROM tbl_personnel LEFT JOIN tbl_position ON tbl_personnel.pos_id =tbl_position.pos_id LEFT JOIN tbl_gass_rank ON tbl_personnel.gass_id = tbl_gass_rank.gass_id LEFT JOIN tbl_academic_rank ON tbl_personnel.rank_id = tbl_academic_rank.rank_id LEFT JOIN tbl_department ON tbl_personnel.dept_id = tbl_department.dept_id ORDER BY per_id ASC");
+                                    $display = $con->prepare("SELECT * FROM tbl_personnel ORDER BY per_id ASC");
                                     $display->execute();
                                     $fetch = $display->fetchAll();                               
 
                                       foreach($fetch as $key => $row) { 
                                         $pos_id = $row['pos_id'];
-                                        $gass_id = $row['gass_id'];
-                                        $rank_id = $row['rank_id'];
+                                       
                                         $bday = $row["per_date_of_birth"];
                                         $dooa = $row["per_date_of_original_appointment"];
                                         $date = new DateTime($bday);
@@ -205,7 +222,7 @@
 
 
                                   ?>
-	<label><u><?php echo $row['dept_name']; ?></u></label>
+	<label><u><?php echo $row['per_designation']; ?></u></label>
 	<?php } ?>	
 			<br>
 			Division
@@ -217,7 +234,7 @@
 		</tr>
 		
 		<tr>
-			<td colspan = "4" class = "page-header">Educational Background</label>
+			<td colspan = "4" class = "page-header"><strong>Educational Background</strong></label>
 		</tr>
 		<tr>
 			<td><label><u><?php echo $row['bs_name']; ?></u></label>
@@ -261,8 +278,23 @@
 			School	
 			</td>
 		</tr>
+
+		<tr>
+			<td><label><u><?php echo $row['other_degree']; ?></u></label>
+			<br>
+			Other Degree		
+			</td>
+			<td><label><u><?php echo $row['other_year']; ?></u></label>
+			<br>
+			Year	
+			</td>
+			<td colspan = "2"><label><u><?php echo $row['other_school']; ?></u></label>
+			<br>
+			School	
+			</td>
+		</tr>
 	</table></center>
-	<?php } ?>
+	
           <br><br>
                 <div class="noted" style="display: inline-block;">
                     <label>Prepared by:</label>
@@ -324,48 +356,8 @@ function printContent(el){
     document.body.innerHTML = restorepage;
 }
 </script>
-<script type="text/javascript">
-    (function(document) {
-    'use strict';
 
-    var LightTableFilter = (function(Arr) {
-
-        var _input;
-
-        function _onInputEvent(e) {
-            _input = e.target;
-            var tables = document.getElementsByClassName(_input.getAttribute('data-table'));
-            Arr.forEach.call(tables, function(table) {
-                Arr.forEach.call(table.tBodies, function(tbody) {
-                    Arr.forEach.call(tbody.rows, _filter);
-                });
-            });
-        }
-
-        function _filter(row) {
-            var text = row.textContent.toLowerCase(), val = _input.value.toLowerCase();
-            row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
-        }
-
-        return {
-            init: function() {
-                var inputs = document.getElementsByClassName('light-table-filter');
-                Arr.forEach.call(inputs, function(input) {
-                    input.oninput = _onInputEvent;
-                });
-            }
-        };
-    })(Array.prototype);
-
-    document.addEventListener('readystatechange', function() {
-        if (document.readyState === 'complete') {
-            LightTableFilter.init();
-        }
-    });
-
-})(document);
-</script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="js/angular.min.js"></script>
 <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope) {

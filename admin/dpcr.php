@@ -49,7 +49,7 @@ include("header.php")
                                 ?>
                                 <div class="files">
                                 <form method="POST" action="" >
-                                    <a href="file_table.php?per_id=<?php echo $per_id; ?>"><img src="img/folder.png" style="width: 100px; height: 80px; padding: 5px;"><br>
+                                    <a href="dpcr.php?per_id=<?php echo $per_id; ?>"><img src="img/folder.png" style="width: 100px; height: 80px; padding: 5px;"><br>
                                     <p><?php echo $per_firstname . " " . $per_lastname; ?></p></a>
                                 </div>
                                 </form>
@@ -73,7 +73,7 @@ include("header.php")
                                         <tbody>
                                         <?php
                                 if (isset($_GET['per_id'])){
-                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}'");
+                                $stmt=$con->prepare("SELECT * FROM tbl_files INNER JOIN tbl_personnel ON tbl_files.per_id = tbl_personnel.per_id where tbl_personnel.per_id = '{$_GET['per_id']}'&& file_repo ='DPCR'");
                                     $stmt->execute();
                                     if($stmt->rowCount() > 0) {
 
@@ -108,5 +108,3 @@ include("header.php")
     </div>
 </section>
 </body>
-<script src="plugins/js/jquery-1.js"></script>
-<?php include("script.php"); ?>
